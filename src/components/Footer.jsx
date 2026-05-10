@@ -13,8 +13,8 @@ const Footer = () => {
         {/* --- TOP SECTION: Logo & Socials --- */}
         <div className="flex flex-col md:flex-row justify-between items-center border-b border-base-content/10 pb-8 mb-10">
           <Link to="/" className="flex items-center gap-1 mb-6 md:mb-0">
-            <span className="text-4xl font-black tracking-tighter text-[#4285F4]">M</span>
-            <span className="text-4xl font-black tracking-tighter">di</span>
+            <span className="text-4xl font-black tracking-tighter text-[#4285F4]">MovieMaster</span>
+            <span className="text-4xl font-black tracking-tighter">Pro</span>
           </Link>
 
           {/* Social Media Links - Opening in new tabs */}
