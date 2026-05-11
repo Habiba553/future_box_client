@@ -4,13 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 
-/**
- * AddMovie
- * Simple form to add a movie to your local API at http://localhost:3000/movies
- *
- * Adjust field names/endpoint if your backend expects different keys.
- */
-
 const AddMovie = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -26,7 +19,7 @@ const AddMovie = () => {
       genre: e.target.genre.value.trim(),
       releaseYear: e.target.releaseYear.value ? Number(e.target.releaseYear.value) : null,
       director: e.target.director.value.trim(),
-      cast: e.target.cast.value.trim(), // backend may accept string or array
+      cast: e.target.cast.value.trim(),
       plotSummary: e.target.plotSummary.value.trim(),
       language: e.target.language.value.trim(),
       country: e.target.country.value.trim(),
@@ -48,9 +41,7 @@ const AddMovie = () => {
       }
 
       const result = await res.json();
-      console.log("Add movie result:", result);
       toast.success("Movie added successfully!");
-      // navigate to movies list and pass the new movie in navigation state
       navigate("/movies", { replace: true, state: { newMovie: result } });
     } catch (err) {
       console.error("Failed to add movie:", err);
@@ -61,123 +52,139 @@ const AddMovie = () => {
   };
 
   return (
-    <div className="card border border-gray-200 bg-base-100 w-full max-w-2xl mx-auto shadow-2xl rounded-2xl">
-      <div className="card-body p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">Add New Movie</h2>
+    <div className="py-10 px-4 min-h-screen">
+      <div className="card bg-base-100 w-full max-w-3xl mx-auto shadow-2xl rounded-3xl overflow-hidden border border-base-300">
+        {/* Header with the sky-blue gradient matching UpdateMovie */}
+        <div className="bg-gradient-to-r from-sky-400 to-cyan-500 p-8 text-white text-center">
+          <h2 className="text-3xl font-bold">Add New Movie</h2>
+          <p className="opacity-80 mt-1">Share a new cinematic masterpiece with the collection</p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="label font-medium">Title</label>
-            <input
-              name="title"
-              type="text"
-              required
-              className="input w-full rounded-full focus:border-0 focus:outline-gray-200"
-              placeholder="Movie title"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label className="label font-medium">Poster URL</label>
+        <div className="card-body p-8 pt-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            
+            <div className="form-control">
+              <label className="label"><span className="label-text font-bold">Movie Title</span></label>
               <input
-                name="poster"
-                type="url"
+                name="title"
+                type="text"
                 required
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-200"
-                placeholder="https://example.com/poster.jpg"
+                placeholder="Enter movie title"
+                className="input input-bordered w-full rounded-xl focus:ring-2 focus:ring-sky-500 transition-all"
               />
             </div>
 
-            <div>
-              <label className="label font-medium">Genre</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="form-control">
+                <label className="label"><span className="label-text font-bold">Poster URL</span></label>
+                <input
+                  name="poster"
+                  type="url"
+                  required
+                  placeholder="https://example.com/poster.jpg"
+                  className="input input-bordered w-full rounded-xl"
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label"><span className="label-text font-bold">Genre</span></label>
+                <input
+                  name="genre"
+                  placeholder="Action, Drama, Sci-Fi..."
+                  className="input input-bordered w-full rounded-xl"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="form-control">
+                <label className="label"><span className="label-text font-bold">Release Year</span></label>
+                <input
+                  name="releaseYear"
+                  type="number"
+                  placeholder="2024"
+                  className="input input-bordered w-full rounded-xl"
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label"><span className="label-text font-bold">Rating (0-10)</span></label>
+                <input
+                  name="rating"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="10"
+                  placeholder="8.5"
+                  className="input input-bordered w-full rounded-xl"
+                />
+              </div>
+
+              <div className="form-control">
+                <label className="label"><span className="label-text font-bold">Language</span></label>
+                <input
+                  name="language"
+                  placeholder="English"
+                  className="input input-bordered w-full rounded-xl"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="form-control">
+                <label className="label"><span className="label-text font-bold">Director</span></label>
+                <input
+                  name="director"
+                  placeholder="Director name"
+                  className="input input-bordered w-full rounded-xl"
+                />
+              </div>
+              <div className="form-control">
+                <label className="label"><span className="label-text font-bold">Country</span></label>
+                <input
+                  name="country"
+                  placeholder="Country of origin"
+                  className="input input-bordered w-full rounded-xl"
+                />
+              </div>
+            </div>
+
+            <div className="form-control">
+              <label className="label"><span className="label-text font-bold">Cast (comma separated)</span></label>
               <input
-                name="genre"
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-200"
-                placeholder="Action, Drama..."
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div>
-              <label className="label font-medium">Release Year</label>
-              <input
-                name="releaseYear"
-                type="number"
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-200"
-                placeholder="2024"
+                name="cast"
+                placeholder="Actor 1, Actor 2, Actor 3..."
+                className="input input-bordered w-full rounded-xl"
               />
             </div>
 
-            <div>
-              <label className="label font-medium">Rating</label>
-              <input
-                name="rating"
-                type="number"
-                step="0.1"
-                min="0"
-                max="10"
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-200"
-                placeholder="8.5"
+            <div className="form-control">
+              <label className="label"><span className="label-text font-bold">Plot Summary</span></label>
+              <textarea
+                name="plotSummary"
+                rows={4}
+                placeholder="Enter a brief synopsis of the movie..."
+                className="textarea textarea-bordered w-full rounded-2xl"
               />
             </div>
 
-            <div>
-              <label className="label font-medium">Language</label>
-              <input
-                name="language"
-                className="input w-full rounded-full focus:border-0 focus:outline-gray-200"
-                placeholder="English"
-              />
-            </div>
-          </div>
+            {user?.email && (
+              <div className="p-4 bg-base-200 rounded-2xl flex items-center justify-between">
+                <span className="text-sm font-semibold text-gray-500">Adding by</span>
+                <span className="badge badge-ghost p-3">{user.email}</span>
+              </div>
+            )}
 
-          <div>
-            <label className="label font-medium">Director</label>
-            <input
-              name="director"
-              className="input w-full rounded-full focus:border-0 focus:outline-gray-200"
-              placeholder="Director name"
-            />
-          </div>
-
-          <div>
-            <label className="label font-medium">Cast (comma separated)</label>
-            <input
-              name="cast"
-              className="input w-full rounded-full focus:border-0 focus:outline-gray-200"
-              placeholder="Actor 1, Actor 2, ..."
-            />
-          </div>
-
-          <div>
-            <label className="label font-medium">Country</label>
-            <input
-              name="country"
-              className="input w-full rounded-full focus:border-0 focus:outline-gray-200"
-              placeholder="Country"
-            />
-          </div>
-
-          <div>
-            <label className="label font-medium">Plot Summary</label>
-            <textarea
-              name="plotSummary"
-              rows={5}
-              className="textarea w-full rounded-2xl focus:border-0 focus:outline-gray-200"
-              placeholder="Short synopsis"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={submitting}
-            className="btn w-full text-white mt-2 rounded-full bg-linear-to-r from-pink-500 to-red-600 hover:from-pink-600 hover:to-red-700"
-          >
-            {submitting ? "Adding..." : "Add Movie"}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={submitting}
+              className={`btn btn-block text-white rounded-xl text-lg font-bold shadow-lg transition-all duration-300 border-none
+                ${submitting ? 'loading' : 'bg-gradient-to-r from-sky-400 to-cyan-500 hover:from-sky-500 hover:to-cyan-600 hover:scale-[1.02]'}`}
+            >
+              {submitting ? "Adding to Collection..." : "Add Movie Now"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
