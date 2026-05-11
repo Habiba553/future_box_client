@@ -293,7 +293,7 @@ const MovieDetails = () => {
     <button
       onClick={handleAddToCollection}
       disabled={submitting}
-      className="btn btn-secondary rounded-full"
+      className="btn rounded-full bg-gradient-to-r from-sky-400 to-cyan-500 text-white border-0 hover:from-sky-500 hover:to-cyan-600"
     >
       {submitting ? "Saving..." : "Add to Collection"}
     </button>
