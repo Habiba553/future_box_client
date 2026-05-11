@@ -1,16 +1,19 @@
-import React, { useEffect, useState, useCallback } from "react";
+// src/pages/AllMovies.jsx
+import React, { useEffect, useState, useCallback, useContext } from "react"; // Added useContext
 import { useLocation, useNavigate } from "react-router-dom";
-import { FaFilter, FaRedoAlt, FaSearch, FaPlayCircle, FaStar } from "react-icons/fa";
+import { FaFilter, FaRedoAlt, FaSearch, FaPlayCircle, FaStar, FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext"; // Added AuthContext import
 
 const API_BASE = "http://localhost:3000";
-const TMDB_BASE = "https://image.tmdb.org/t/p/w500";
+const TMDB_BASE = "https://image.tmdb.org/p/w500";
 
 const ALL_GENRES = ["Action", "Drama", "Comedy", "Crime Drama", "Sci-Fi", "Horror", "Romance", "Documentary", "Thriller", "Animation", "Mystery"];
 const ALL_LANGUAGES = ["English", "Spanish", "Hindi", "French", "German", "Japanese"];
 const ALL_COUNTRIES = ["USA", "UK", "India", "Canada", "Australia"];
 
 export default function AllMovies() {
+  const { user } = useContext(AuthContext); // Destructure user from context
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -44,7 +47,6 @@ export default function AllMovies() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       
-      // Data Normalization matches GenreSection
       const arr = Array.isArray(json) ? json : json.data ?? json.movies ?? [];
       setMovies(arr);
     } catch (err) {
@@ -82,15 +84,27 @@ export default function AllMovies() {
             </h2>
           </div>
 
-          <div className="relative w-full md:w-96 group">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
-              placeholder="Search by title..."
-              className="w-full bg-transparent border-b-2 border-base-content/20 py-4 pr-12 outline-none focus:border-[#24BAEF] text-base-content font-bold transition-all"
-            />
-            <FaSearch className="absolute right-0 top-1/2 -translate-y-1/2 opacity-30 group-focus-within:text-[#24BAEF] group-focus-within:opacity-100 transition-all" />
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+            {/* --- CONDITIONALLY RENDERED: ADD MOVIE BUTTON --- */}
+            {user && (
+              <Link 
+                to="/add-movie" 
+                className="w-full sm:w-auto bg-[#24BAEF] text-white px-6 h-[50px] rounded-sm text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#1da1d1] transition-all shadow-lg shadow-sky-100"
+              >
+                <FaPlus /> Add Movie
+              </Link>
+            )}
+
+            <div className="relative w-full md:w-96 group">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
+                placeholder="Search by title..."
+                className="w-full bg-transparent border-b-2 border-base-content/20 py-4 pr-12 outline-none focus:border-[#24BAEF] text-base-content font-bold transition-all"
+              />
+              <FaSearch className="absolute right-0 top-1/2 -translate-y-1/2 opacity-30 group-focus-within:text-[#24BAEF] group-focus-within:opacity-100 transition-all" />
+            </div>
           </div>
         </div>
       </div>
@@ -158,11 +172,8 @@ export default function AllMovies() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-12">
             {movies.map((m) => {
-              // --- POSTER LOGIC (DO NOT CHANGE THIS) ---
               const doc = m?.movieDoc ?? m;
               const id = doc._id ?? doc.id ?? m._id ?? m.id;
-
-              // Check every possible field name for the image
               const posterRaw = doc.poster || doc.posterUrl || doc.poster_path || doc.imageUrl || m.poster || "";
 
               let poster = "";
@@ -172,7 +183,6 @@ export default function AllMovies() {
                 } else if (posterRaw.startsWith("http")) {
                   poster = posterRaw;
                 } else {
-                  // Fallback for relative paths
                   poster = posterRaw;
                 }
               }
@@ -198,7 +208,6 @@ export default function AllMovies() {
                       </Link>
                     </div>
                     
-                    {/* Badge Overlay */}
                     <div className="absolute top-3 left-3 bg-[#24BAEF] text-white text-[8px] font-black px-2 py-0.5 rounded-sm uppercase">
                       {Array.isArray(doc.genre) ? doc.genre[0] : (doc.genre?.split(',')[0] ?? "Movie")}
                     </div>
