@@ -9,18 +9,21 @@ const UpdateMovie = () => {
   const loaderData = useLoaderData();
   
   /**
-   * Robustly unwrap movie data. 
+   * REASON FOR ERROR: If your backend returns { success: true, data: {...} }, 
+   * the code below checks all common nesting patterns to find the movie object.
    */
-  const movie = loaderData?.data ?? loaderData?.result ?? loaderData?.movieDoc ?? loaderData?.movie ?? loaderData;
+  const movie = loaderData?.data ?? loaderData?.result ?? loaderData?.movieDoc ?? loaderData;
   
   /**
-   * FIX: Ensure the ID is captured. If your backend uses MongoDB, it is likely _id.
+   * REASON FOR ERROR: Ensure we find the ID regardless of whether 
+   * it's named _id (MongoDB) or id (General API).
    */
   const movieId = movie?._id?.toString() || movie?.id?.toString();
   
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
 
+  // If movie or ID is missing, show a more descriptive debug message
   if (!movie || !movieId) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -40,14 +43,8 @@ const UpdateMovie = () => {
     e.preventDefault();
     setSubmitting(true);
 
-    // Final safety check for the ID before calling the API
-    if (!movieId) {
-      toast.error("Error: Could not find movie ID.");
-      setSubmitting(false);
-      return;
-    }
-
     const form = e.target;
+    // Capture form values
     const payload = {
       title: form.title.value.trim(),
       poster: form.poster.value.trim(),
@@ -65,14 +62,11 @@ const UpdateMovie = () => {
       country: form.country.value.trim(),
     };
 
+    // Preserve metadata
     if (movie.addedBy) payload.addedBy = movie.addedBy;
     if (movie.addedByUid) payload.addedByUid = movie.addedByUid;
 
     try {
-      /**
-       * UPDATED: Using the verified movieId variable. 
-       * Ensure your backend route is: router.put("/movies/:id", ...)
-       */
       const updateUrl = `http://localhost:3000/movies/${movieId}`;
       
       const res = await fetch(updateUrl, {
@@ -84,7 +78,6 @@ const UpdateMovie = () => {
       const responseData = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        // This captures the "Movie not found" message coming from your server
         throw new Error(responseData.error || responseData.message || `HTTP ${res.status}`);
       }
 
@@ -101,8 +94,7 @@ const UpdateMovie = () => {
 
       navigate("/movies", { replace: true });
     } catch (err) {
-      console.error("Update error detail:", err);
-      // This displays the error message sent by your backend
+      console.error("Update error:", err);
       toast.error(`Update failed: ${err.message}`);
     } finally {
       setSubmitting(false);
