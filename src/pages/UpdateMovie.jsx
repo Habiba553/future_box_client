@@ -15,14 +15,22 @@ import { useNavigate } from "react-router-dom";
 
 const UpdateMovie = () => {
   const loaderData = useLoaderData();
-  const movie = loaderData?.result ?? loaderData;
+  
+  // FIX 1: Robustly unwrap movie data (checks result, movieDoc, or the object itself)
+  const movie = loaderData?.result ?? loaderData?.movieDoc ?? loaderData;
+  
+  // FIX 2: Explicitly capture the ID and ensure it's a string to prevent "undefined" URLs
+  const movieId = movie?._id?.toString() || movie?.id?.toString();
+  
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
 
-  if (!movie) {
+  if (!movie || !movieId) {
     return (
       <div className="card bg-base-100 w-full max-w-md mx-auto shadow-2xl rounded-2xl p-6">
-        <div className="text-center">No movie found to update.</div>
+        <div className="text-center text-error font-bold">
+          No movie found to update. (ID Missing or Data structure mismatch)
+        </div>
       </div>
     );
   }
@@ -43,22 +51,22 @@ const UpdateMovie = () => {
     const rawCountry = e.target.country.value.trim();
     const rawRating = e.target.rating.value.trim();
 
-    // Build payload carefully: only include fields that were provided (so we don't accidentally overwrite with empty values).
+    // Build payload carefully
     const payload = {};
 
     if (rawTitle) payload.title = rawTitle;
-    if (rawPoster) payload.poster = rawPoster;
+    if (rawPoster) {
+        payload.poster = rawPoster;
+        payload.posterUrl = rawPoster; // Ensure compatibility with both field names
+    }
 
-    // Normalize genre: allow user to type "Action, Drama" or provide a single genre.
     if (rawGenre) {
-      // If backend expects a string, you can change this back. Many apps prefer array for multi-genre.
       const maybeArray = rawGenre.includes(",")
         ? rawGenre.split(",").map((s) => s.trim()).filter(Boolean)
         : [rawGenre];
       payload.genre = maybeArray;
     }
 
-    // releaseYear: only include if valid number
     const ry = Number(rawReleaseYear);
     if (rawReleaseYear !== "" && Number.isFinite(ry)) {
       payload.releaseYear = ry;
@@ -66,7 +74,6 @@ const UpdateMovie = () => {
 
     if (rawDirector) payload.director = rawDirector;
 
-    // Cast: convert to array if comma-separated, otherwise single value array
     if (rawCast) {
       payload.cast = rawCast.includes(",")
         ? rawCast.split(",").map((s) => s.trim()).filter(Boolean)
@@ -77,33 +84,31 @@ const UpdateMovie = () => {
     if (rawLanguage) payload.language = rawLanguage;
     if (rawCountry) payload.country = rawCountry;
 
-    // rating: include only when a valid number is provided
     if (rawRating !== "") {
       const r = parseFloat(rawRating);
       if (Number.isFinite(r)) payload.rating = r;
     }
 
-    // Preserve addedBy if present on loaded movie (do not expose or allow editing)
-    if (movie.addedBy) {
-      payload.addedBy = movie.addedBy;
-    }
-    if (movie.addedByUid) {
-      payload.addedByUid = movie.addedByUid;
-    }
+    if (movie.addedBy) payload.addedBy = movie.addedBy;
+    if (movie.addedByUid) payload.addedByUid = movie.addedByUid;
 
     try {
-      const res = await fetch(`http://localhost:3000/movies/${movie._id || movie.id}`, {
+      // FIX 3: Ensure the URL is constructed with a verified string ID
+      const updateUrl = `http://localhost:3000/movies/${movieId}`;
+      
+      const res = await fetch(updateUrl, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
+      const responseData = await res.json().catch(() => ({}));
+
       if (!res.ok) {
-        const errText = await res.text().catch(() => res.statusText);
-        throw new Error(errText || `HTTP ${res.status}`);
+        // Specifically catch the "Movie not found" error from backend response
+        throw new Error(responseData.error || responseData.message || `HTTP ${res.status}`);
       }
 
-      await res.json().catch(() => null);
       toast.success("Movie updated successfully!");
       await Swal.fire({
         icon: "success",
@@ -145,7 +150,7 @@ const UpdateMovie = () => {
               <input
                 name="poster"
                 type="url"
-                defaultValue={movie.poster ?? ""}
+                defaultValue={movie.poster ?? movie.posterUrl ?? ""}
                 required
                 className="input w-full rounded-full focus:border-0 focus:outline-gray-200"
                 placeholder="https://..."
@@ -243,22 +248,22 @@ const UpdateMovie = () => {
             />
           </div>
 
-{/* Added By - read only */}
-{movie.addedBy && (
-  <div>
-    <label className="label font-medium">Added By</label>
-    <input
-      type="text"
-      value={movie.addedBy}
-      disabled
-      className="input w-full rounded-full bg-gray-100 text-gray-500 cursor-not-allowed"
-    />
-  </div>
-)}
-        <button
+          {movie.addedBy && (
+            <div>
+              <label className="label font-medium">Added By</label>
+              <input
+                type="text"
+                value={movie.addedBy}
+                disabled
+                className="input w-full rounded-full bg-gray-100 text-gray-500 cursor-not-allowed"
+              />
+            </div>
+          )}
+
+          <button
             type="submit"
             disabled={submitting}
-            className="btn w-full text-white mt-2 rounded-full bg-linear-to-r from-pink-500 to-red-600 hover:from-pink-600 hover:to-red-700"
+            className="btn w-full text-white mt-2 rounded-full bg-gradient-to-r from-pink-500 to-red-600 hover:from-pink-600 hover:to-red-700 border-none"
           >
             {submitting ? "Updating..." : "Update Movie"}
           </button>
@@ -268,4 +273,4 @@ const UpdateMovie = () => {
   );
 };
 
-export default UpdateMovie; 
+export default UpdateMovie;
