@@ -1,3 +1,4 @@
+// src/components/MovieGrid.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -8,78 +9,77 @@ export default function MovieGrid({ movies = [] }) {
     <div className="pt-4">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {movies.map((m) => {
-          const id = m._id ?? m.id ?? Math.random().toString(36).slice(2);
+          // --- 1. UNWRAP NESTED DATA ---
+          // This is the most common reason images fail in the grid vs the details page
+          const doc = m?.movieDoc ?? m;
 
-          // --- FIXED POSTER NORMALIZATION ---
+          const id = doc._id ?? doc.id ?? m._id ?? m.id ?? Math.random().toString(36).slice(2);
+
+          // --- 2. ROBUST POSTER EXTRACTION ---
+          // We check both the unwrapped 'doc' AND the original 'm'
           const posterRaw =
-            m.posterUrl ??
+            doc.poster ??
+            doc.posterUrl ??
+            doc.poster_path ??
+            doc.imageUrl ??
             m.poster ??
-            m.poster_path ??
-            m.imageUrl ??
+            m.posterUrl ??
             "";
 
           let poster = "";
-
-          if (posterRaw) {
+          if (posterRaw && typeof posterRaw === "string") {
             if (posterRaw.startsWith("/")) {
-              // TMDB style poster path ("/abc123.jpg")
               poster = `${TMDB_BASE}${posterRaw}`;
             } else if (/^https?:\/\//i.test(posterRaw)) {
-              // Already a full URL
               poster = posterRaw;
             } else {
-              // Local filename like "poster.jpg"
               poster = `${window.location.origin}/${posterRaw.replace(/^\/+/, "")}`;
             }
           }
-          // -------------------------------
 
-          const title = m.title ?? "Untitled";
-          const year = m.releaseYear ?? "—";
-          const duration = m.duration ?? "";
-          const rating = m.rating ?? "—";
-          const genre = m.genre ?? "—";
+          const title = doc.title ?? m.title ?? "Untitled";
+          const year = doc.releaseYear ?? m.releaseYear ?? "—";
+          const rating = doc.rating ?? m.rating ?? "—";
+          const genre = doc.genre ?? m.genre ?? "HD";
 
           return (
             <div key={id} className="group h-full">
               <Link to={`/movie-details/${id}`} className="block h-full">
-                <div className="relative overflow-hidden rounded-lg bg-gray-800 flex flex-col h-full">
-
+                <div className="relative overflow-hidden rounded-lg bg-gray-800 flex flex-col h-full shadow-lg">
                   {/* Poster */}
-                  <figure className="h-48 overflow-hidden relative w-full bg-black">
+                  <figure className="aspect-[2/3] overflow-hidden relative w-full bg-black">
                     {poster ? (
                       <img
                         src={poster}
                         alt={title}
                         onError={(e) => {
                           e.currentTarget.onerror = null;
-                          e.currentTarget.src = "/images/placeholder-poster.png";
+                          // Use a guaranteed external placeholder if local one is missing
+                          e.currentTarget.src = "https://via.placeholder.com/500x750?text=No+Poster";
                         }}
-                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                      <div className="w-full h-full bg-gray-700 flex items-center justify-center text-gray-400 text-xs">
                         No Image
                       </div>
                     )}
+                    
+                    {/* Genre Badge */}
+                    <div className="absolute top-2 left-2 text-black text-[10px] font-black px-2 py-0.5 rounded bg-gradient-to-r from-[#00C6FF] to-[#00E29F] uppercase">
+                      {String(Array.isArray(genre) ? genre[0] : genre).split(" ")[0]}
+                    </div>
                   </figure>
 
-                  {/* Genre Badge */}
-                  <div className="absolute top-2 left-2 text-black text-[11px] font-semibold px-2 py-0.5 rounded bg-gradient-to-r from-[#00C6FF] via-[#00DDBB] to-[#00E29F]">
-                    {String(genre).split(" ")[0] ?? "HD"}
-                  </div>
-
                   {/* Title + Info */}
-                  <div className="p-3 flex flex-col justify-end gap-2">
-                    <h3 className="text-sm font-semibold line-clamp-2 text-white flex items-center gap-1">
+                  <div className="p-3 flex flex-col justify-between flex-grow bg-gray-900">
+                    <h3 className="text-sm font-bold line-clamp-1 text-white group-hover:text-[#00C6FF] transition-colors">
                       {title}
-                      <span className="text-yellow-400 ml-1 text-xs">({rating})</span>
                     </h3>
 
-                    <div className="mt-1 text-xs text-gray-300 flex items-center gap-2">
+                    <div className="mt-2 text-[11px] text-gray-400 flex justify-between items-center">
                       <span>{year}</span>
-                      <span>•</span>
-                      <span>{duration ? `${duration} min` : "—"}</span>
+                      <span className="text-yellow-500 font-bold">⭐ {rating}</span>
                     </div>
                   </div>
                 </div>
