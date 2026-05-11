@@ -248,7 +248,7 @@ const MovieDetails = () => {
             <h1 className="text-3xl md:text-4xl font-bold text-gray-800">{title}</h1>
 
             <div className="flex gap-3 flex-wrap">
-              {genre && <div className="badge badge-lg badge-outline text-pink-600 border-pink-600 font-medium">{genre}</div>}
+              {genre && <div className="badge badge-lg badge-outline text-cyan-600 border-cyan-500 font-medium">{genre}</div>}
               {rating != null && <div className="badge badge-lg badge-outline text-yellow-700 border-yellow-300 font-medium">⭐ {rating}</div>}
               {releaseYear && <div className="badge badge-lg badge-outline">{releaseYear}</div>}
               {runtime && <div className="badge badge-lg badge-outline">{runtime}</div>}
@@ -268,7 +268,7 @@ const MovieDetails = () => {
     <>
       <Link
         to={`/update-movie/${movie._id ?? movie.id}`}
-        className="btn btn-primary rounded-full bg-linear-to-r from-pink-500 to-red-600 text-white border-0 hover:from-pink-600 hover:to-red-700"
+        className="btn rounded-full bg-gradient-to-r from-sky-400 to-cyan-500 text-white border-0 hover:from-sky-500 hover:to-cyan-600"
       >
         Update Movie
       </Link>
@@ -276,7 +276,7 @@ const MovieDetails = () => {
       <button
         onClick={handleDelete}
         disabled={submitting}
-        className="btn btn-outline rounded-full border-gray-300 hover:border-pink-500 hover:text-pink-600"
+        className="btn btn-outline rounded-full border-gray-300 hover:border-cyan-500 hover:text-cyan-600"
       >
         {submitting ? "Deleting..." : "Delete"}
       </button>
@@ -284,7 +284,7 @@ const MovieDetails = () => {
       <button
         onClick={handleAddToCollection}
         disabled={submitting}
-        className="btn btn-secondary rounded-full"
+        className="btn rounded-full bg-gradient-to-r from-sky-400 to-cyan-500 text-white border-0 hover:from-sky-500 hover:to-cyan-600"
       >
         {submitting ? "Saving..." : "Add to Collection"}
       </button>
