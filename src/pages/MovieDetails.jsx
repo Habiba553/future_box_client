@@ -202,6 +202,43 @@ const MovieDetails = () => {
     }
   };
 
+  // --- NEW: Watchlist Handler ---
+  const handleAddToWatchlist = async () => {
+    if (!user) {
+      toast.error("You must be logged in to use the watchlist.");
+      return;
+    }
+    try {
+      setSubmitting(true);
+      const watchlistItem = {
+        userEmail: userEmail,
+        movieId: movie._id ?? movie.id,
+        title: movie.title,
+        poster: movie.poster || movie.posterUrl,
+        genre: movie.genre,
+        releaseYear: movie.releaseYear,
+        rating: movie.rating
+      };
+
+      const res = await fetch("http://localhost:3000/watchlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(watchlistItem),
+      });
+
+      if (res.ok) {
+        toast.success("Added to Watchlist!");
+        navigate("/watchlist");
+      } else {
+        toast.error("Failed to add to watchlist.");
+      }
+    } catch (err) {
+      toast.error("An error occurred.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   if (loading) return <div className="py-8 text-center">Loading movie...</div>;
 
   if (!movie) {
@@ -215,6 +252,7 @@ const MovieDetails = () => {
     );
   }
 
+  
   // Common fields for layout
   const {
     title,
@@ -263,40 +301,59 @@ const MovieDetails = () => {
             </div>
 
             {/* Action buttons: only owner sees Update/Delete */}
-            <div className="flex gap-3 mt-6">
+            
+ {/* Action buttons section */}
+<div className="flex flex-col gap-4 mt-6">
   {user ? (
     <>
-      <Link
-        to={`/update-movie/${movie._id ?? movie.id}`}
-        className="btn rounded-full bg-gradient-to-r from-sky-400 to-cyan-500 text-white border-0 hover:from-sky-500 hover:to-cyan-600"
-      >
-        Update Movie
-      </Link>
+      {/* Row 1: Update, Delete, Add to Collection */}
+      <div className="flex flex-wrap gap-3">
+        <Link
+          to={`/update-movie/${movie._id ?? movie.id}`}
+          className="btn rounded bg-gradient-to-r from-sky-400 to-cyan-500 text-white border-0 hover:from-sky-500 hover:to-cyan-600"
+        >
+          Update Movie
+        </Link>
 
-      <button
-        onClick={handleDelete}
-        disabled={submitting}
-        className="btn btn-outline rounded-full border-gray-300 hover:border-cyan-500 hover:text-cyan-600"
-      >
-        {submitting ? "Deleting..." : "Delete"}
-      </button>
+        <button
+          onClick={handleDelete}
+          disabled={submitting}
+          className="btn btn-outline rounded border-gray-300 hover:border-cyan-500 hover:text-cyan-600"
+        >
+          {submitting ? "Deleting..." : "Delete"}
+        </button>
 
+        <button
+          onClick={handleAddToCollection}
+          disabled={submitting}
+          className="btn rounded bg-gradient-to-r from-sky-400 to-cyan-500 text-white border-0 hover:from-sky-500 hover:to-cyan-600"
+        >
+          {submitting ? "Saving..." : "Add to Collection"}
+        </button>
+      </div>
+
+      {/* Row 2: Add to Watchlist */}
+      <div className="flex">
+        <button
+          onClick={handleAddToWatchlist}
+          disabled={submitting}
+          className="btn btn-outline rounded border-cyan-500 text-cyan-600 hover:bg-cyan-500 hover:text-white"
+        >
+          Add to Watchlist
+        </button>
+      </div>
+    </>
+  ) : (
+    /* Logged out state */
+    <div className="flex">
       <button
         onClick={handleAddToCollection}
         disabled={submitting}
-        className="btn rounded-full bg-gradient-to-r from-sky-400 to-cyan-500 text-white border-0 hover:from-sky-500 hover:to-cyan-600"
+        className="btn rounded bg-gradient-to-r from-sky-400 to-cyan-500 text-white border-0 hover:from-sky-500 hover:to-cyan-600"
       >
         {submitting ? "Saving..." : "Add to Collection"}
       </button>
-    </>
-  ) : (
-    <button
-      onClick={handleAddToCollection}
-      disabled={submitting}
-      className="btn rounded-full bg-gradient-to-r from-sky-400 to-cyan-500 text-white border-0 hover:from-sky-500 hover:to-cyan-600"
-    >
-      {submitting ? "Saving..." : "Add to Collection"}
-    </button>
+    </div>
   )}
 </div>
 

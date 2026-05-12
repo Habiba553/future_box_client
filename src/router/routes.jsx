@@ -15,6 +15,7 @@ import AddMovie from "../pages/AddMovie";
 import MyCollection from "../pages/MyCollection";
 import Profile from "../pages/Profile"; // <-- added
 import PrivateRoute from './PrivateRoute';
+import MyWatchlist from "../pages/MyWatchlist";
 
 /**
  * Loader: fetch all movies for the /movies route
@@ -64,9 +65,8 @@ export const router = createBrowserRouter([
       { path: "my-collection", element: <PrivateRoute>
       <MyCollection />
     </PrivateRoute> },
-
-      // Profile page (was missing)
-      { path: "profile", element: <Profile /> },
+      { path: "/watchlist", element: <MyWatchlist /> },
+      
 
       // Auth routes (canonical /auth/*)
       { path: "auth/login", element: <Login /> },

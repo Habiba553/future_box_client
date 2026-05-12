@@ -1,7 +1,7 @@
 // src/components/NavBar.jsx
 import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { FaUser, FaSearch, FaMoon, FaSun, FaBars } from "react-icons/fa";
+import { FaUser, FaSearch, FaMoon, FaSun, FaBars, FaHeart } from "react-icons/fa"; // Added FaHeart
 import { MdCollections } from "react-icons/md";
 import { IoLogOut } from "react-icons/io5";
 import { AuthContext } from "../context/AuthContext";
@@ -61,6 +61,10 @@ const NavBar = () => {
               </li>
               <li><NavLink to="/" className="py-3">Home</NavLink></li>
               <li><NavLink to="/movies" className="py-3">Movies</NavLink></li>
+              {/* Conditional My Wishlist for Mobile */}
+              {user && (
+                <li><NavLink to="/watchlist" className="py-3"> Watchlist</NavLink></li>
+              )}
               <li><NavLink to="/my-collection" className="py-3">My Collection</NavLink></li>
             </ul>
           </div>
@@ -76,6 +80,10 @@ const NavBar = () => {
             <ul className="menu menu-horizontal px-1 gap-2 text-[15px] font-bold">
               <li><NavLink to="/" className={({ isActive }) => isActive ? "text-[#4285F4] bg-transparent" : "hover:text-[#4285F4] bg-transparent"}>Home</NavLink></li>
               <li><NavLink to="/movies" className={({ isActive }) => isActive ? "text-[#4285F4] bg-transparent" : "hover:text-[#4285F4] bg-transparent"}>Movies</NavLink></li>
+              {/* Conditional My Wishlist for Desktop */}
+              {user && (
+                <li><NavLink to="/watchlist" className={({ isActive }) => isActive ? "text-[#4285F4] bg-transparent" : "hover:text-[#4285F4] bg-transparent"}>Watchlist</NavLink></li>
+              )}
               <li><NavLink to="/my-collection" className={({ isActive }) => isActive ? "text-[#4285F4] bg-transparent" : "hover:text-[#4285F4] bg-transparent"}>My Collection</NavLink></li>
             </ul>
           </div>
@@ -84,7 +92,7 @@ const NavBar = () => {
         {/* --- RIGHT SIDE: Search, Theme Toggle, Auth --- */}
         <div className="navbar-end flex-none gap-2 md:gap-4">
           
-          {/* Global Search Bar (Hidden on very small screens, shown in menu on mobile) */}
+          {/* Global Search Bar */}
           <form onSubmit={handleSearchSubmit} className="hidden sm:flex relative items-center group">
             <div className="relative">
               <input
@@ -122,7 +130,8 @@ const NavBar = () => {
                     <p className="font-bold text-base truncate">{user.displayName || "User"}</p>
                     <p className="text-xs opacity-60 truncate font-medium">{user.email}</p>
                   </li>
-                  <li><Link to="/profile" className="py-2"><FaUser /> Profile Settings</Link></li>
+                  {/* Added to Profile Dropdown as well */}
+                  <li><Link to="/watchlist" className="py-2"><FaHeart /> My Watchlist</Link></li>
                   <li><Link to="/my-collection" className="py-2"><MdCollections /> Movie Collection</Link></li>
                   <li className="mt-4">
                     <button onClick={signOutUser} className="btn btn-error btn-sm w-full text-white bg-[#24BAEF] hover:bg-[#1da1d1] font-bold flex items-center justify-center gap-2 rounded-lg">
