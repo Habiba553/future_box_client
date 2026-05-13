@@ -24,9 +24,9 @@ const Login = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-
+  
     setLoading?.(true);
-
+  
     signInUser(email, password)
       .then((result) => {
         setLoading?.(false);
@@ -36,7 +36,13 @@ const Login = () => {
       })
       .catch((error) => {
         setLoading?.(false);
-        toast.error(error.message || "Login failed");
+        
+        // This matches the error code seen in image_1cba1d.png
+        if (error.code === "auth/invalid-credential" || error.code === "auth/user-not-found") {
+          toast.error("This email is not registered. Please sign up first.");
+        } else {
+          toast.error(error.message || "Login failed");
+        }
       });
   };
 
@@ -49,6 +55,7 @@ const Login = () => {
         setUser?.(result.user);
         toast.success("Login successful");
         navigate(from, { replace: true });
+        
       })
       .catch((error) => {
         setLoading?.(false);
@@ -74,6 +81,7 @@ const Login = () => {
         setLoading?.(false);
         toast.error(error.message || "Password reset failed");
       });
+     
   };
 
   return (
@@ -177,6 +185,7 @@ const Login = () => {
         </div>
       </MyContainer>
     </div>
+    
   );
 };
 

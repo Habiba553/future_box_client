@@ -1,6 +1,7 @@
 // src/pages/UpdateMovie.jsx
 import React, { useState } from "react";
-import toast from "react-hot-toast";
+// Switched to react-toastify to match your main ToastContainer
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { useLoaderData } from "react-router";
 import { useNavigate } from "react-router-dom";
@@ -69,6 +70,9 @@ const UpdateMovie = () => {
     try {
       const updateUrl = `http://localhost:3000/movies/${movieId}`;
       
+      // Log for debugging "Movie not found" error
+      console.log("Updating movie at:", updateUrl);
+
       const res = await fetch(updateUrl, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -91,13 +95,13 @@ const UpdateMovie = () => {
         icon: "success",
         title: "Updated!",
         text: "The movie details have been saved.",
-        timer: 1000,
+        timer: 1500,
         showConfirmButton: false,
         customClass: { popup: 'rounded-3xl' }
       });
 
       // 3. Navigate to the Movie Details page
-      navigate(`/movies/${movieId}`, { replace: true });
+      navigate(`/movies`, { replace: true });
 
     } catch (err) {
       console.error("Update error:", err);
