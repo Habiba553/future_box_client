@@ -87,14 +87,14 @@ const TopRated = () => {
         </div>
 
         {/* Top 5 Grid - Edge to Edge spacing */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 ">
           {items.map((m) => {
             const id = m._id ?? m.id;
             return (
               <Link 
                 to={`/movie-details/${id}`} 
                 key={id} 
-                className="group relative flex flex-col bg-base-200 border border-base-content/10 overflow-hidden rounded-[2px] transition-all hover:border-[#4285F4]/50"
+                className="group relative flex flex-col bg-base-200 border border-base-content/10 overflow-hidden rounded-[2px] transition-all hover:border-[#24BAEF]/40 transition-all duration-300 shadow-xl"
               >
                 {/* Poster Area */}
                 <div className="aspect-[2/3] relative overflow-hidden bg-base-300">

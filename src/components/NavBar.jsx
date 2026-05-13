@@ -144,7 +144,7 @@ const NavBar = () => {
           ) : (
             <div className="flex items-center gap-1.5 md:gap-3">
               <Link to="/auth/login" className="btn btn-sm md:btn-md h-9 min-h-[36px] md:h-11 md:min-h-[44px] bg-[#24BAEF] hover:bg-[#1da1d1] border-none text-white px-3 md:px-6 rounded-lg font-bold transition-all shadow-md hover:shadow-lg active:scale-95 text-xs md:text-sm uppercase tracking-wider">
-                Login In
+                Login
               </Link>
               <Link to="/auth/register" className="hidden xs:flex btn btn-sm md:btn-md h-9 min-h-[36px] md:h-11 md:min-h-[44px] btn-outline border-base-content/20 hover:bg-base-content hover:text-base-100 px-3 md:px-6 rounded-lg font-bold transition-all active:scale-95 text-xs md:text-sm uppercase tracking-wider">
                 Join

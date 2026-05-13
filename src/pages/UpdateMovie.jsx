@@ -81,18 +81,24 @@ const UpdateMovie = () => {
         throw new Error(responseData.error || responseData.message || `HTTP ${res.status}`);
       }
 
+      // --- REFINED SUCCESS LOGIC ---
+      
+      // 1. Show the success toast immediately
       toast.success("Movie updated successfully!"); 
       
+      // 2. Show SweetAlert and WAIT for it to finish (or the timer to end)
       await Swal.fire({
         icon: "success",
-        title: "Success!",
-        text: "The movie has been updated.",
-        timer: 2000,
+        title: "Updated!",
+        text: "The movie details have been saved.",
+        timer: 1000,
         showConfirmButton: false,
         customClass: { popup: 'rounded-3xl' }
       });
 
-      navigate("/movies", { replace: true });
+      // 3. Navigate to the Movie Details page
+      navigate(`/movies/${movieId}`, { replace: true });
+
     } catch (err) {
       console.error("Update error:", err);
       toast.error(`Update failed: ${err.message}`);
