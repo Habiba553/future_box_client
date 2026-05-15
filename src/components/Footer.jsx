@@ -73,9 +73,7 @@ const Footer = () => {
               <li>
                 <Link to="/my-collection" className="hover:text-[#4285F4] transition-all">My Collection</Link>
               </li>
-              <li>
-                <Link to="/auth/login" className="hover:text-[#4285F4] transition-all">Login / Register</Link>
-              </li>
+              
             </ul>
           </div>
 

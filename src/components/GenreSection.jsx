@@ -4,7 +4,7 @@ import MovieGrid from "./MovieGrid";
 import { FaFilter } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion"; // Added for eye-soothing animations
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://moviemaster-server-kappa.vercel.app";
 const ALL_GENRES = [
   "Action", "Drama", "Comedy", "Crime Drama", "Sci-Fi", 
   "Horror", "Romance", "Documentary", "Thriller", "Animation", "Mystery",

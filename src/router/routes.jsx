@@ -21,7 +21,7 @@ import MyWatchlist from "../pages/MyWatchlist";
  * Loader: fetch all movies for the /movies route
  */
 export const moviesLoader = async () => {
-  const res = await fetch("http://localhost:3000/movies");
+  const res = await fetch("https://moviemaster-server-kappa.vercel.app/movies");
   if (!res.ok) {
     throw new Response("Failed to load movies", { status: res.status });
   }
@@ -34,7 +34,7 @@ export const moviesLoader = async () => {
  */
 export const movieLoader = async ({ params }) => {
   const { id } = params;
-  const res = await fetch(`http://localhost:3000/movies/${id}`);
+  const res = await fetch(`https://moviemaster-server-kappa.vercel.app/movies/${id}`);
   if (!res.ok) {
     throw new Response("Failed to load movie", { status: res.status });
   }

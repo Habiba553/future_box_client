@@ -13,7 +13,7 @@ const MyWatchlist = () => {
   // 1. Fetch the user's specific watchlist
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/watchlist?email=${user.email}`)
+      fetch(`https://moviemaster-server-kappa.vercel.app/watchlist?email=${user.email}`)
         .then((res) => res.json())
         .then((data) => {
           setWatchlist(data);
@@ -40,7 +40,7 @@ const MyWatchlist = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`http://localhost:3000/watchlist/${id}`, {
+          const res = await fetch(`https://moviemaster-server-kappa.vercel.app/watchlist/${id}`, {
             method: "DELETE",
           });
           if (res.ok) {

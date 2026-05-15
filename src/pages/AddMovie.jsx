@@ -29,7 +29,7 @@ const AddMovie = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:3000/movies", {
+      const res = await fetch("https://moviemaster-server-kappa.vercel.app/movies", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

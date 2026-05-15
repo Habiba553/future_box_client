@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://moviemaster-server-kappa.vercel.app";
 
 function pickPoster(m) {
   return m.poster ?? m.posterUrl ?? "";

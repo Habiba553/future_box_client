@@ -5,7 +5,7 @@ import { FaFilter, FaRedoAlt, FaSearch, FaPlayCircle, FaStar, FaPlus } from "rea
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext"; // Added AuthContext import
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://moviemaster-server-kappa.vercel.app";
 const TMDB_BASE = "https://image.tmdb.org/p/w500";
 
 const ALL_GENRES = ["Action", "Drama", "Comedy", "Crime Drama", "Sci-Fi", "Horror", "Romance", "Documentary", "Thriller", "Animation", "Mystery"];

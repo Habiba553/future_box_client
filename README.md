@@ -1,16 +1,20 @@
-# React + Vite
+URL:  https://movie-master-3676f.web.app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MovieMaster Pro is an excellent movie management system that cinefiles can use to browse through and organize their favorite movies.
 
-Currently, two official plugins are available:
+Features:
+Dynamic Search & Filtering: Easily search and filter movies according to genre, ratings, and year of release.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Customizable Watchlists: Generate your own "My Collection" movies gallery and synchronize it with your account.
 
-## React Compiler
+Complete CRUD Support: Easily create, read, update, and delete movie objects in the application.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Firebase Authentication: Instant access using authentication methods including Email, Google, or GitHub.
 
-## Expanding the ESLint configuration
+High-quality Responsive Interface: An aesthetically pleasing UI designed using Tailwind CSS and glassmorphism.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Technology Stack::
+Frontend: React, Tailwind CSS, React Routing
+Backend: Node.js, Express.js
+Database: MongoDB
+Authentication: Firebase Authentication

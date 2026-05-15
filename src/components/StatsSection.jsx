@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FaFilm, FaUsers } from "react-icons/fa";
 import { motion } from "framer-motion"; // Added for eye-soothing animations
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://moviemaster-server-kappa.vercel.app";
 
 // Simple Count-up component for the numbers
 const CountUp = ({ value }) => {

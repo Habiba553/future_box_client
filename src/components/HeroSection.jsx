@@ -11,7 +11,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://moviemaster-server-kappa.vercel.app";
 const MAX_SLIDES = 6;
 
 export default function HeroSection() {

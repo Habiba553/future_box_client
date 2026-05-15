@@ -27,7 +27,7 @@ const MovieDetails = () => {
     const headers = {};
     if (user?.accessToken) headers.authorization = `Bearer ${user.accessToken}`;
 
-    fetch(`http://localhost:3000/movies/${id}`, { headers })
+    fetch(`https://moviemaster-server-kappa.vercel.app/movies/${id}`, { headers })
       .then((res) => {
         if (!res.ok) throw new Error(`Failed to load movie (status ${res.status})`);
         return res.json();
@@ -136,7 +136,7 @@ const MovieDetails = () => {
       const headers = { "Content-Type": "application/json" };
       if (user?.accessToken) headers.authorization = `Bearer ${user.accessToken}`;
 
-      const res = await fetch(`http://localhost:3000/movies/${movie._id ?? movie.id}`, {
+      const res = await fetch(`https://moviemaster-server-kappa.vercel.app/movies/${movie._id ?? movie.id}`, {
         method: "DELETE",
         headers,
       });
@@ -177,7 +177,7 @@ const MovieDetails = () => {
         addedAt: new Date().toISOString(),
       };
 
-      const res = await fetch(`http://localhost:3000/my-collection`, {
+      const res = await fetch(`https://moviemaster-server-kappa.vercel.app/my-collection`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -220,7 +220,7 @@ const MovieDetails = () => {
         rating: movie.rating
       };
 
-      const res = await fetch("http://localhost:3000/watchlist", {
+      const res = await fetch("https://moviemaster-server-kappa.vercel.app/watchlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(watchlistItem),

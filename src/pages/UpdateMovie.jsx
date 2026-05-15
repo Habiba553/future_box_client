@@ -68,7 +68,7 @@ const UpdateMovie = () => {
     if (movie.addedByUid) payload.addedByUid = movie.addedByUid;
 
     try {
-      const updateUrl = `http://localhost:3000/movies/${movieId}`;
+      const updateUrl = `https://moviemaster-server-kappa.vercel.app/movies/${movieId}`;
       
       // Log for debugging "Movie not found" error
       console.log("Updating movie at:", updateUrl);

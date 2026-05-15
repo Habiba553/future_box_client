@@ -35,7 +35,7 @@ const MyCollection = () => {
     const abort = new AbortController();
     setLoading(true);
 
-    const url = `http://localhost:3000/my-collection?email=${encodeURIComponent(user.email)}`;
+    const url = `https://moviemaster-server-kappa.vercel.app/my-collection?email=${encodeURIComponent(user.email)}`;
 
     fetch(url, {
       headers: {
@@ -97,7 +97,7 @@ const MyCollection = () => {
     const idToDelete = collectionItem._id ?? collectionItem.id ?? collectionItem.movieId;
     try {
       setSubmittingId(idToDelete);
-      const res = await fetch(`http://localhost:3000/my-collection/${encodeURIComponent(idToDelete)}`, {
+      const res = await fetch(`https://moviemaster-server-kappa.vercel.app/my-collection/${encodeURIComponent(idToDelete)}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

@@ -61,7 +61,7 @@ const Register = () => {
         photo: photoURL 
       };
 
-      fetch('http://localhost:3000/users', {
+      fetch('https://moviemaster-server-kappa.vercel.app/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUser)
@@ -113,7 +113,7 @@ const Register = () => {
         photo: user.photoURL 
       };
 
-      fetch('http://localhost:3000/users', {
+      fetch('https://moviemaster-server-kappa.vercel.app/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUser)
