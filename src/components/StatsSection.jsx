@@ -1,7 +1,7 @@
 // src/components/StatsSection.jsx
 import React, { useEffect, useState } from "react";
 import { FaFilm, FaUsers } from "react-icons/fa";
-import { motion } from "framer-motion"; // Added for eye-soothing animations
+import { motion } from "framer-motion"; 
 
 const API_BASE = "https://moviemaster-server-kappa.vercel.app";
 

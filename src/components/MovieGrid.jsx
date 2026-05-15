@@ -10,13 +10,12 @@ export default function MovieGrid({ movies = [] }) {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {movies.map((m) => {
           // --- 1. UNWRAP NESTED DATA ---
-          // This is the most common reason images fail in the grid vs the details page
           const doc = m?.movieDoc ?? m;
 
           const id = doc._id ?? doc.id ?? m._id ?? m.id ?? Math.random().toString(36).slice(2);
 
           // --- 2. ROBUST POSTER EXTRACTION ---
-          // We check both the unwrapped 'doc' AND the original 'm'
+          
           const posterRaw =
             doc.poster ??
             doc.posterUrl ??

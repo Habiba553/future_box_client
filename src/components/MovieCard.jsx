@@ -10,7 +10,7 @@ export const MovieCard = ({
   showActions = true,
 }) => {
   // --- STEP 1: UNWRAP NESTED DATA ---
-  // If the movie data is inside 'movieDoc', use that. Otherwise, use 'movie'.
+  
   const doc = movie?.movieDoc ?? movie ?? {};
 
   // --- STEP 2: EXTRACT WITH FALLBACKS ---
@@ -34,7 +34,7 @@ export const MovieCard = ({
   // --- STEP 3: IMAGE NORMALIZATION ---
   const TMDB_BASE = "https://image.tmdb.org/t/p/w500";
   
-  // Check every possible property for the image URL
+  
   const rawPoster = poster ?? posterUrl ?? movie.poster ?? movie.posterUrl ?? "";
   
   let finalPoster = "";

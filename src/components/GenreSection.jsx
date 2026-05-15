@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import MovieGrid from "./MovieGrid";
 import { FaFilter } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion"; // Added for eye-soothing animations
+import { motion, AnimatePresence } from "framer-motion"; 
 
 const API_BASE = "https://moviemaster-server-kappa.vercel.app";
 const ALL_GENRES = [
@@ -110,7 +110,7 @@ export default function GenreSection() {
           </div>
         </motion.div>
 
-        {/* --- Static Genre Selection Bar (Animated) --- */}
+        {/* --- Static Genre Selection Bar --- */}
         <motion.div 
           variants={containerVariants}
           initial="hidden"

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
-import { motion, AnimatePresence } from "framer-motion"; // Added for smooth animations
+import { motion, AnimatePresence } from "framer-motion"; 
 
 // Swiper Styles
 import "swiper/css";

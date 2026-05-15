@@ -60,7 +60,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Quick Links Section (Updated with your Routes) */}
+          {/* Quick Links Section */}
           <div>
             <h3 className="text-lg font-bold mb-6">Quick Links</h3>
             <ul className="space-y-3 text-sm opacity-70">
@@ -90,7 +90,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* --- BOTTOM SECTION: Copyright --- */}
+        {/* --- BOTTOM SECTION: --- */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-base-content/5 text-xs opacity-50">
           <p>Copyright © {currentYear}, <span className="font-bold uppercase">MovieMaster Pro</span>. All Rights Reserved</p>
           <div className="flex gap-4 mt-4 md:mt-0">
@@ -100,7 +100,7 @@ const Footer = () => {
         </div>
       </div>
       
-      {/* Scroll to top button - Blue Square Style */}
+      {/* Scroll to top button */}
       <button 
         onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
         className="fixed bottom-6 right-6 bg-[#4285F4] text-white p-3 rounded-md shadow-lg hover:brightness-110 active:scale-95 transition-all z-50"
